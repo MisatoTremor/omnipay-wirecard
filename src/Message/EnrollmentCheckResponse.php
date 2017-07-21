@@ -11,6 +11,11 @@ class EnrollmentCheckResponse extends AbstractResponse implements RedirectRespon
         return $this->getData()->threeD ? $this->getData()->threeD->isRedirect() : false;
     }
 
+    public function isPending()
+    {
+        return 'N' === $this->getData()->threeD->cardholderAuthenticationStatus;
+    }
+
     public function getRedirectUrl()
     {
         return $this->getData()->threeD->acsUrl;

@@ -73,6 +73,7 @@ class Gateway extends AbstractGateway
     {
         $request = $this->createRequest('\Omnipay\Wirecard\Message\EnrollmentCheckRequest', $parameters);
         $request->setBuilder(new EnrollmentBuilder($request));
+        $request->getCard()->validate();
 
         return $request;
     }
@@ -85,34 +86,9 @@ class Gateway extends AbstractGateway
     {
         $request = $this->createRequest('\Omnipay\Wirecard\Message\CheckPayerResponseRequest', $parameters);
         $request->setBuilder(new CheckPayerResponseBuilder($request));
-        $request->getCard()->validate();
 
         return $request;
     }
-
-//    /**
-//     * @param array $parameters
-//     * @return RequestInterface
-//     */
-//    public function preauthorization(array $parameters = array())
-//    {
-//        $request = $this->createRequest('\Omnipay\Wirecard\Message\PreauthorizationRequest', $parameters);
-//        $request->setBuilder(new PaymentBuilder($request));
-//
-//        return $request;
-//    }
-//
-//    /**
-//     * @param array $parameters
-//     * @return RequestInterface
-//     */
-//    public function capture(array $parameters = array())
-//    {
-//        $request = $this->createRequest('\Omnipay\Wirecard\Message\CaptureRequest', $parameters);
-//        $request->setBuilder(new ReferencedBuilder($request));
-//
-//        return $request;
-//    }
 
     /**
      * @param array $parameters
@@ -137,52 +113,4 @@ class Gateway extends AbstractGateway
 
         return $request;
     }
-//
-//    /**
-//     * @param array $parameters
-//     * @return RequestInterface
-//     */
-//    public function reversal(array $parameters = array())
-//    {
-//        $request = $this->createRequest('\Omnipay\Wirecard\Message\ReversalRequest', $parameters);
-//        $request->setBuilder(new ReferencedBuilder($request));
-//
-//        return $request;
-//    }
-//
-//    /**
-//     * @param array $parameters
-//     * @return RequestInterface
-//     */
-//    public function query(array $parameters = array())
-//    {
-//        $request = $this->createRequest('\Omnipay\Wirecard\Message\QueryRequest', $parameters);
-//        $request->setBuilder(new ReferencedBuilder($request));
-//
-//        return $request;
-//    }
-//
-//    /**
-//     * @param array $parameters
-//     * @return RequestInterface
-//     */
-//    public function bookBack(array $parameters = array())
-//    {
-//        $request = $this->createRequest('\Omnipay\Wirecard\Message\BookBackRequest', $parameters);
-//        $request->setBuilder(new ReferencedBuilder($request));
-//
-//        return $request;
-//    }
-//
-//    /**
-//     * @param array $parameters
-//     * @return RequestInterface
-//     */
-//    public function originalCredit(array $parameters = array())
-//    {
-//        $request = $this->createRequest('Omnipay\Wirecard\Message\OriginalCreditRequest', $parameters);
-//        $request->setBuilder(new PaymentBuilder($request));
-//
-//        return $request;
-//    }
 }
