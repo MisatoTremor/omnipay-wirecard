@@ -1,5 +1,5 @@
 {
-    "name": "MisatoTremor/omnipay-wirecard",
+    "name": "misato-tremor/omnipay-wirecard",
     "type": "library",
     "description": "Wirecard gateway for Omnipay payment processing library",
     "keywords": [
