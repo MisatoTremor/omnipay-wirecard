@@ -23,6 +23,7 @@ class DebitRequest extends AbstractRequest
     {
         return $this->setParameter('bic', $value);
     }
+
     public function getFirstName()
     {
         return $this->getParameter('firstName');

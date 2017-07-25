@@ -2,6 +2,9 @@
 
 namespace Omnipay\Wirecard;
 
+use Doctrine\Common\Annotations\AnnotationRegistry;
+use JMS\Serializer\SerializerBuilder;
+use JMS\Serializer\SerializerInterface;
 use Omnipay\Common\AbstractGateway;
 use Omnipay\Common\Message\RequestInterface;
 use Omnipay\Wirecard\Message\AbstractRequest;
@@ -9,6 +12,7 @@ use Omnipay\Wirecard\Message\Builder\CheckPayerResponseBuilder;
 use Omnipay\Wirecard\Message\Builder\DebitBuilder;
 use Omnipay\Wirecard\Message\Builder\EnrollmentBuilder;
 use Omnipay\Wirecard\Message\Builder\PurchaseBuilder;
+use Wirecard\Element\Payment;
 
 /**
  * @method AbstractRequest createRequest(string $class, array $parameters)
@@ -23,6 +27,16 @@ class Gateway extends AbstractGateway
     public function getName()
     {
         return 'Wirecard';
+    }
+
+    public function initialize(array $parameters = array())
+    {
+        if (!isset($parameters['serializer'])) {
+            AnnotationRegistry::registerLoader('class_exists');
+            $parameters['serializer'] = SerializerBuilder::create()->build();
+        }
+
+        return parent::initialize($parameters);
     }
 
     public function getDefaultParameters()
@@ -66,7 +80,26 @@ class Gateway extends AbstractGateway
     }
 
     /**
+     * @param SerializerInterface $serializer
+     *
+     * @return $this
+     */
+    public function setSerializer(SerializerInterface $serializer)
+    {
+        return $this->setParameter('serializer', $serializer);
+    }
+
+    /**
+     * @return SerializerInterface
+     */
+    public function getSerializer()
+    {
+        return $this->getParameter('serializer');
+    }
+
+    /**
      * @param array $parameters
+     *
      * @return RequestInterface
      */
     public function enrollmentCheck(array $parameters = array())
@@ -80,6 +113,7 @@ class Gateway extends AbstractGateway
 
     /**
      * @param array $parameters
+     *
      * @return RequestInterface
      */
     public function checkPayerResponse(array $parameters = array())
@@ -92,6 +126,7 @@ class Gateway extends AbstractGateway
 
     /**
      * @param array $parameters
+     *
      * @return RequestInterface
      */
     public function purchase(array $parameters = array())
@@ -104,6 +139,7 @@ class Gateway extends AbstractGateway
 
     /**
      * @param array $parameters
+     *
      * @return RequestInterface
      */
     public function debit(array $parameters = array())
@@ -112,5 +148,13 @@ class Gateway extends AbstractGateway
         $request->setBuilder(new DebitBuilder($request));
 
         return $request;
+    }
+
+    /**
+     * @return Payment
+     */
+    public function checkDebitResponse()
+    {
+        return $this->getSerializer()->deserialize(file_get_contents('php://input'), Payment::class, 'xml');
     }
 }

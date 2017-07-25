@@ -18,4 +18,9 @@ class PaymentMethod
      * @Serializer\XmlAttribute
      */
     public $url;
+
+    public function isRedirect()
+    {
+        return !empty($this->url);
+    }
 }

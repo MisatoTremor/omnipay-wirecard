@@ -6,9 +6,9 @@ use Doctrine\Common\Annotations\AnnotationRegistry;
 use JMS\Serializer\SerializerBuilder;
 use JMS\Serializer\SerializerInterface;
 use Omnipay\Common\Message\ResponseInterface;
-use Wirecard\Element\Payment;
 use Omnipay\Wirecard\Message\Builder\BuilderInterface;
 use RuntimeException;
+use Wirecard\Element\Payment;
 
 abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
 {
@@ -51,16 +51,21 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
     }
 
     /**
+     * @param SerializerInterface $serializer
+     *
+     * @return \Omnipay\Common\Message\AbstractRequest
+     */
+    public function setSerializer(SerializerInterface $serializer)
+    {
+        return $this->setParameter('serializer', $serializer);
+    }
+
+    /**
      * @return SerializerInterface
      */
     public function getSerializer()
     {
-        if (!$this->serializer) {
-            AnnotationRegistry::registerLoader('class_exists');
-            $this->serializer = SerializerBuilder::create()->build();
-        }
-
-        return $this->serializer;
+        return $this->getParameter('serializer');
     }
 
     /**
