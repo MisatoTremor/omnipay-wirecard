@@ -11,9 +11,22 @@ class EnrollmentCheckResponse extends AbstractResponse implements RedirectRespon
         return $this->getData()->threeD ? $this->getData()->threeD->isRedirect() : false;
     }
 
-    public function isPending()
+    /**
+     * @return bool
+     */
+    public function isLiabilityShiftGranted()
     {
-        return 'N' === $this->getData()->threeD->cardholderAuthenticationStatus;
+        if ('N' !== $this->getData()->threeD->cardholderAuthenticationStatus) {
+            return false;
+        }
+        // Check for liability shift indicating status codes
+        foreach ($this->getData()->statuses as $status) {
+            if (in_array($status->code, ['500.1072', '500.1075'])) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public function getRedirectUrl()
@@ -34,5 +47,4 @@ class EnrollmentCheckResponse extends AbstractResponse implements RedirectRespon
     {
         return 'POST';
     }
-
 }
