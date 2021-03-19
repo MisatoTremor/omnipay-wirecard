@@ -8,6 +8,7 @@ use JMS\Serializer\SerializerInterface;
 use Omnipay\Common\AbstractGateway;
 use Omnipay\Common\Message\RequestInterface;
 use Omnipay\Wirecard\Message\AbstractRequest;
+use Omnipay\Wirecard\Message\Builder\ApplePayPurchaseBuilder;
 use Omnipay\Wirecard\Message\Builder\CheckPayerResponseBuilder;
 use Omnipay\Wirecard\Message\Builder\DebitBuilder;
 use Omnipay\Wirecard\Message\Builder\EnrollmentBuilder;
@@ -151,10 +152,38 @@ class Gateway extends AbstractGateway
     }
 
     /**
+     * @param array $parameters
+     *
+     * @return RequestInterface
+     */
+    public function applePayPurchase(array $parameters = array())
+    {
+        $request = $this->createRequest('\Omnipay\Wirecard\Messa{
+            "class": "Symfony\\Component\\Debug\\Exception\\FatalThrowableError",
+            "message": "basename() expects parameter 1 to be string, object given",
+            "code": 0,
+            "file": "/var/www/lms/src/Doctrine/ModuleManager.php:314",
+            "trace": [
+                "/var/www/lms/src/Doctrine/ModuleManager.php:314",
+                "/var/www/lms/src/Controller/Editor/PackageController.php:321",
+                "/var/www/lms/vendor/symfony/http-kernel/HttpKernel.php:151",
+                "/var/www/lms/vendor/symfony/http-kernel/HttpKernel.php:68",
+                "/var/www/lms/vendor/symfony/http-kernel/Kernel.php:198",
+                "/var/www/lms/public/index.php:25"
+            ]
+        }ge\ApplePayPurchaseRequest', $parameters);
+        $request->setBuilder(new ApplePayPurchaseBuilder($request));
+
+        return $request;
+    }
+
+    /**
+     * @param string $path
+     *
      * @return Payment
      */
-    public function checkDebitResponse()
+    public function checkDebitResponse($path = 'php://input')
     {
-        return $this->getSerializer()->deserialize(file_get_contents('php://input'), Payment::class, 'xml');
+        return $this->getSerializer()->deserialize(file_get_contents($path), Payment::class, 'xml');
     }
 }

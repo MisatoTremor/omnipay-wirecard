@@ -22,8 +22,8 @@ class RequestedAmount
     /**
      * RequestedAmount constructor.
      *
-     * @param $value
-     * @param $currency
+     * @param double $value
+     * @param string $currency
      */
     public function __construct($value, $currency)
     {
